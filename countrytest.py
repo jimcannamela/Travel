@@ -88,3 +88,16 @@
 # response = requests.request("GET", url, headers=headers)
 
 # print(response.text)
+
+# import requests
+
+# url = "https://countriesnow.space/api/v0.1/countries/info?returns=currency,flag"
+
+# payload={
+#     'iso2' : 'ES'
+# }
+# headers = {}
+
+# response = requests.request("GET", url, headers=headers, data=payload)
+
+# print(response.text)

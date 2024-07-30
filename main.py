@@ -1,8 +1,11 @@
 #  Travel Dashboard
 import country
 import longlat
+import exchange
 
 # ASSUMPTION: User is in the United States and are travelling to a foreign country
+# TODO: How do I determine someone's location based on IP address?
+default_currency='USD'
 '''
 MVP
 
@@ -83,25 +86,36 @@ if travel_city in cities['data']:
     position=longlat.get_position(travel_city)
     lat_pos=position[0]['latitude']
     long_pos=position[0]['longitude']
+    print(f"The coordinates for your destination city are: {lat_pos}, {long_pos}")
 else:
-    print(f"Error: the city {travel_city} is not a valid city.")
+    print(f"We could not find the specified city {travel_city}.")
     # get position for country
     position=country.get_position(country_iso2)
     lat_pos=position['data'].get('lat')
     long_pos=position['data'].get('long')
-
-
-print(f"The coordinates for your destination are: {lat_pos}, {long_pos}")
+    print(f"The coordinates for your destination country are: {lat_pos}, {long_pos}")
 
 # get country flag
 
+country_flag=country.get_flag(country_iso2)['data'].get('flag')
 
+print(country_flag)
 
 # get currency
 
+country_currency=country.get_currency(country_iso2)['data'].get('currency')
+
+print(country_currency)
+
 # get exchange rate
 
+country_exchange_rate=exchange.get_exchange_rate(default_currency,country_currency)['conversion_rate']
+
+print(country_exchange_rate)
+
 # get weather
+
+# location_weather=
 
 # 
 

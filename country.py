@@ -58,7 +58,7 @@ def get_currency(iso2):
 
     response = requests.request("POST", url, headers=headers, data=payload)
 
-    print(response.text)
+    # print(response.text)
 
     result = response.json()
 
@@ -79,7 +79,7 @@ def get_flag(iso2):
 
     response = requests.request("POST", url, headers=headers, data=payload)
 
-    print(response.text)
+    # print(response.text)
 
     result = response.json()
 
