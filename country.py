@@ -38,7 +38,7 @@ def get_cities(country):
 
     response = requests.request("POST", url, headers=headers, data=payload)
 
-    print(response.text)
+    # print(response.text)
 
     result = response.json()
 
@@ -85,10 +85,12 @@ def get_flag(iso2):
 
     return result
 
-# Retreives the longitude and latitude for a country
-# TODO: need to investigate if the other API is at the city level
+# # Retreives the longitude and latitude for a country
+# # TODO: need to investigate if the other API is at the city level
+########## found an api at API ninja for cities
+##########    if city is not found we can get the country position
 
-def get_position():
+def get_position(iso2):
 
     url = "https://countriesnow.space/api/v0.1/countries/positions"
 
@@ -100,7 +102,7 @@ def get_position():
 
     response = requests.request("POST", url, headers=headers, data=payload)
 
-    print(response.text)
+    # print(response.text)
 
     result = response.json()
 
