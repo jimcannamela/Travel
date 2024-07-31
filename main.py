@@ -44,12 +44,21 @@ if country_iso2 == '':
 
 cities = country.get_cities(travel_country)         # TODO: turn this into a list box
 
+# print(cities)
+
 if travel_city in cities['data']:
     # get position for city
     position=longlat.get_position(travel_city)
-    lat_pos=position[0]['latitude']
-    long_pos=position[0]['longitude']
-    # print(f"The coordinates for your destination city are: {lat_pos}, {long_pos}")
+    if len(position) > 0:
+        lat_pos=position[0]['latitude']
+        long_pos=position[0]['longitude']
+        # print(f"The coordinates for your destination city are: {lat_pos}, {long_pos}")
+    else:
+        print(f"We could not find the specified city {travel_city}.")
+        # get position for country
+        position=country.get_position(country_iso2)
+        lat_pos=position['data'].get('lat')
+        long_pos=position['data'].get('long')
 else:
     print(f"We could not find the specified city {travel_city}.")
     # get position for country
@@ -86,7 +95,7 @@ print(f"\n\tCurrent time is: {location_weather['tzoffset']}")          # TODO: a
 
 current_conditions=location_weather['currentConditions']
 
-print(f"\n\tThe current temperature is: {current_conditions['temp']} Feels like {current_conditions['feelslike']}")    # TODO: display with F or C and degree symbol
+print(f"\n\tThe current temperature is: {current_conditions['temp']} Feels like {current_conditions['feelslike']}")    # TODO: display with F or C and degree symbol - calc in C and display as superscript
 print(f"\t\tWind speed: {current_conditions['windspeed']} from the {current_conditions['winddir']}")                   # TODO: calculate wind direction
 print(f"\t\tHumidity: {current_conditions['humidity']} Precipitation: {current_conditions['precip']}")                 # TODO: determine if these are percentages and adjust display accordingly
 print(f"\t\tSunrise was at: {current_conditions['sunrise']} sunset is at {current_conditions['sunset']}")              # TODO: display time in user friendly format AM/PM
