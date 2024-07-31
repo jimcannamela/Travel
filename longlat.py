@@ -11,7 +11,7 @@ def get_position(city):
     response = requests.get(api_url, headers={'X-Api-Key': api_key})
 
     if response.status_code == requests.codes.ok:
-        print(response.text)
+        # print(response.text)
         result = response.json()
         return result
     else:
