@@ -5,11 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/style.css">
     <title>Travel Dashboard</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const btn = document.getElementById("submit_button")
+            const frm = document.getElementById("travel_form")
+            btn.addEventListener("click", () => {
+                document.getElementById("travel_info").style.display = "block"
+            })
+            frm.addEventListener("submit", event => {
+                event.preventDefault()
+            })
+        })
+    </script>
 </head>
 <body>
     <h1>Travel Dashboard</h1>
     <h2><i>Where would you like to be?</i></h2>
-    <form method="POST" action="/">
+    <form id="travel_form" method="POST" action="/">
         <label><b>Country:</b></label>
         <select id="country" name="country" onchange="this.form.submit()">
             <option value="">Select a country</option>
@@ -24,7 +36,13 @@
             <option value="{{ city }}">{{ city }}</option>
             {% endfor %}
         </select>
-        <button type="submit">Select</button>
+        <button id="submit_button" type="submit" >Select</button>
+        <div id="travel_info" style="display:none;">
+            <h3>${city}, {{ selected_country }}</h3>
+            <img src="{{ flag }}" ><br>
+            <b>The exchange rate for {{ selected_country }} is {{ exchange_rate }} &nbsp {{ currency }}.</b><br>
+            
+        </div>
     </form>
 </body>
 </html>

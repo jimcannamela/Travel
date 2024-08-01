@@ -2,3 +2,7 @@ body {
     margin: 0;
     background-color:  rgb(74,98,216);
 }
+img { 
+    width: 200px;
+    height: auto;
+}
