@@ -3,10 +3,31 @@ import country
 import longlat
 import exchange
 import weather
+from datetime import datetime
+from pytz import timezone
 
 # ASSUMPTION: User is in the United States and are travelling to a foreign country
 # TODO: How do I determine someone's location based on IP address?
 default_currency='USD'
+degree_sign = u'\N{DEGREE SIGN}'
+
+def wind_angle_to_direction(angle):
+    directions = [
+        "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+        "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"
+    ]
+    idx = int((angle + 11.25) / 22.5) % 16
+    return directions[idx]    
+
+def convert_time_format(time_str):
+    original_time = datetime.strptime(time_str, "%H:%M:%S")
+    formatted_time = original_time.strftime("%I:%M %p").lstrip('0')  
+    return formatted_time
+
+# Example usage
+time_str = "14:35:45"  # Input time string in hh:mm:ss format
+converted_time = convert_time_format(time_str)
+print(converted_time)  # Output will be '02:35 PM'
 
 # Get country data for list box
 
@@ -90,15 +111,23 @@ print(f"\n\tCurrent exchange rate for USD to {country_currency} is {country_exch
 # get weather
 
 location_weather=weather.get_weather(lat_pos,long_pos)
- 
-print(f"\n\tCurrent time is: {location_weather['tzoffset']}")          # TODO: add current time is 'tzoffset'
+
+
+local_timezone = timezone(location_weather['timezone'])
+local_time = datetime.now(local_timezone)
+
+print(f"\n\tThe current local time is: {local_time.strftime("%I:%M %p").lstrip('0')}")   
 
 current_conditions=location_weather['currentConditions']
 
-print(f"\n\tThe current temperature is: {current_conditions['temp']} Feels like {current_conditions['feelslike']}")    # TODO: display with F or C and degree symbol - calc in C and display as superscript
-print(f"\t\tWind speed: {current_conditions['windspeed']} from the {current_conditions['winddir']}")                   # TODO: calculate wind direction
-print(f"\t\tHumidity: {current_conditions['humidity']} Precipitation: {current_conditions['precip']}")                 # TODO: determine if these are percentages and adjust display accordingly
-print(f"\t\tSunrise was at: {current_conditions['sunrise']} sunset is at {current_conditions['sunset']}")              # TODO: display time in user friendly format AM/PM
+wind_direction=wind_angle_to_direction(current_conditions['winddir'])
+sunrise_time=convert_time_format(current_conditions['sunrise'])
+sunset_time=convert_time_format(current_conditions['sunset'])
+
+print(f"\n\tThe current temperature is: {current_conditions['temp']}{degree_sign}F Feels like {current_conditions['feelslike']}{degree_sign}F")    # TODO: calc in C and display as superscript
+print(f"\t\tWind speed: {current_conditions['windspeed']} mph {wind_direction}")                   
+print(f"\t\tHumidity: {current_conditions['humidity']} % Precipitation: {current_conditions['precip']} inches")                 # TODO: determine if these are percentages and adjust display accordingly
+print(f"\t\tSunrise was at: {sunrise_time} sunset is at {sunset_time}")              # TODO: display time in user friendly format AM/PM
 print(f"\t\tCurrent conditions: {current_conditions['conditions']} {location_weather['description']}") # {current_conditions['icon']}") # TODO: determine how to translate icon into an image
 
 # TODO: for now just store the current alerts in a variable possible future work to post them as well

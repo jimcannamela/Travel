@@ -7,7 +7,10 @@ import requests
 
 
 # Retrieves a list of all countries for validation.
-# TODO: determine how to build a list box with this data
+# Shape 
+#     error : false
+#     msg   : countries and ISO codes retrieved
+#     data  : [ name:, Iso2: , Iso3: ]
 
 def get_all_countries():
     
@@ -37,6 +40,27 @@ def get_cities(country):
     headers = {}
 
     response = requests.request("POST", url, headers=headers, data=payload)
+
+    # print(response.text)
+
+    result = response.json()
+
+    return result
+
+# Retrieves all of the countries with all of the cities.
+# Shape 
+#     error : false
+#     msg   : countries and cities retrieved
+#     data  : [ { iso2: , iso3: , country: , cities: [] } ]
+
+def get_countries_and_cities():
+
+    url = "https://countriesnow.space/api/v0.1/countries"
+
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url, headers=headers, data=payload)
 
     # print(response.text)
 
