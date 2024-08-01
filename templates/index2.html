@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/style.css">
+    <title>Travel Dashboard</title>
+    <h1>Travel Dashboard</h1>
+    <h2><i>Where would you like to be?</i></h2>
+    <script>
+        function updateCities() {
+            const country = document.getElementById('country').value;
+            console.log("country selected:", country)
+            fetch(`/get_cities?country=${country}`)
+                .then(response => response.json())
+                .then(data => {
+                    const cityListBox = document.getElementById('city');
+                    cityListBox.innerHTML = '';
+                    data.forEach(city => {
+                        const option = document.createElement('option')
+                        option.value = city;
+                        option.textContent = city;
+                        cityListBox.appendChild(option)
+                    });
+                })
+        }
+    </script>
+</head>
+<body>
+    <form method="POST">
+        <label><b>Country:</b></label>
+        <select id="country" name="country" onchange="updateCities()">
+            <option value="">Select a country</option>
+            {% for country in countries %}
+            <option value="{{ country }}">{{ country }}</option>
+            {% endfor %}
+        </select>
+        <label><b>City:</b></label>
+        <select id="city" name="city">
+            <option value "">Select a City</option>
+        </select>
+        <button type="submit">Select</button>
+    </form>
+</body>
+</html>
